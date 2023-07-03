@@ -92,7 +92,7 @@ const VALUES: [Value; 13] = [
     Value::King,
 ];
 
-#[derive(Debug)]
+#[derive(Debug, Clone, Copy)]
 struct Card {
     suit: Suit,
     value: Value,
@@ -109,6 +109,7 @@ impl Card {
 
 struct Deck {
     cards: Vec<Card>,
+    cards_on_table: Vec<Card>,
 }
 
 impl Deck {
@@ -120,12 +121,28 @@ impl Deck {
                 deck.push(card);
             }
         }
-        Deck { cards: deck }
+        Deck {
+            cards: deck,
+            cards_on_table: Vec::new(),
+        }
+    }
+
+    fn top_card(&mut self) -> Card {
+        let card = self.cards.pop();
+        match card {
+            Some(card) => {
+                self.cards_on_table.push(card.clone());
+                return card;
+            }
+            None => todo!(""),
+        };
     }
 }
 
 fn main() {
-    let deck = Deck::new();
+    let mut deck = Deck::new();
 
+    let card = deck.top_card();
     println!("{:#?}", deck.cards);
+    println!("{:#?}", deck.cards_on_table);
 }
