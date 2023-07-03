@@ -6,7 +6,6 @@ enum Suit {
     Spades,
 }
 
-const SUITS: [Suit; 4] = [Suit::Hearts, Suit::Diamonds, Suit::Clubs, Suit::Spades];
 impl Suit {
     fn self_value(&self) -> &str {
         match *self {
@@ -17,6 +16,8 @@ impl Suit {
         }
     }
 }
+
+const SUITS: [Suit; 4] = [Suit::Hearts, Suit::Diamonds, Suit::Clubs, Suit::Spades];
 
 #[derive(Debug, Clone, Copy)]
 enum Value {
@@ -104,13 +105,27 @@ impl Card {
     }
 }
 
-fn main() {
-    let mut cards = Vec::new();
-    for suit in SUITS {
-        for value in VALUES {
-            let card = Card::new(suit, value);
-            cards.push(card);
+#[derive(Debug)]
+
+struct Deck {
+    cards: Vec<Card>,
+}
+
+impl Deck {
+    fn new() -> Deck {
+        let mut deck = Vec::new();
+        for suit in SUITS {
+            for value in VALUES {
+                let card = Card::new(suit, value);
+                deck.push(card);
+            }
         }
+        Deck { cards: deck }
     }
-    println!("{:#?}", cards);
+}
+
+fn main() {
+    let deck = Deck::new();
+
+    println!("{:#?}", deck.cards);
 }
