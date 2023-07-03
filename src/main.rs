@@ -2,11 +2,21 @@
 enum Suit {
     Hearts,
     Diamonds,
-    Spades,
     Clubs,
+    Spades,
 }
 
 const SUITS: [Suit; 4] = [Suit::Hearts, Suit::Diamonds, Suit::Clubs, Suit::Spades];
+impl Suit {
+    fn self_value(&self) -> &str {
+        match *self {
+            Suit::Hearts => "HEARTS",
+            Suit::Diamonds => "DIAMONDS",
+            Suit::Clubs => "CLUBS",
+            Suit::Spades => "SPADES",
+        }
+    }
+}
 
 #[derive(Debug, Clone, Copy)]
 enum Value {
