@@ -1,5 +1,4 @@
-// use rand::seq::SliceRandom;
-use rand::thread_rng;
+use rand::{seq::SliceRandom, thread_rng};
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 enum Suit {
