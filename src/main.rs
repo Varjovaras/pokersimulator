@@ -1,4 +1,7 @@
-#[derive(Debug, Clone, Copy)]
+// use rand::seq::SliceRandom;
+use rand::thread_rng;
+
+#[derive(Debug, Clone, Copy, PartialEq)]
 enum Suit {
     Hearts,
     Diamonds,
@@ -19,7 +22,7 @@ impl Suit {
 
 const SUITS: [Suit; 4] = [Suit::Hearts, Suit::Diamonds, Suit::Clubs, Suit::Spades];
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, PartialEq)]
 enum Value {
     Two,
     Three,
@@ -92,7 +95,7 @@ const VALUES: [Value; 13] = [
     Value::King,
 ];
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, PartialEq)]
 struct Card {
     suit: Suit,
     value: Value,
@@ -127,6 +130,11 @@ impl Deck {
         }
     }
 
+    fn shuffle_cards(&mut self) -> () {
+        let mut rng = thread_rng();
+        self.cards.shuffle(&mut rng);
+    }
+
     fn top_card(&mut self) -> Card {
         let card = self.cards.pop();
         match card {
@@ -141,8 +149,24 @@ impl Deck {
 
 fn main() {
     let mut deck = Deck::new();
+    deck.shuffle_cards();
 
     let card = deck.top_card();
+
+    let mut deck2 = Deck::new();
+
+    for i in 1..1000000 {
+        deck2.shuffle_cards();
+        if i % 10000 == 0 {
+            println!("{}", i);
+        }
+        if deck.cards == deck2.cards {
+            panic!("decks are equa");
+        }
+    }
+
+    println!("{:#?}", card);
     println!("{:#?}", deck.cards);
     println!("{:#?}", deck.cards_on_table);
+    println!("{:#?}", card);
 }
