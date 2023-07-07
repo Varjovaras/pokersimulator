@@ -1,7 +1,9 @@
 mod deck;
+use deck::Card;
 use deck::DeckInGame;
 
-enum PokerHand {
+#[warn(dead_code)]
+enum _PokerHand {
     HighCard,
     OnePair,
     TwoPair,
@@ -14,6 +16,23 @@ enum PokerHand {
     RoyalFlush,
 }
 
+impl _PokerHand {
+    fn _hand_value(&self) -> i32 {
+        match *self {
+            _PokerHand::HighCard => 0,
+            _PokerHand::OnePair => 1,
+            _PokerHand::TwoPair => 2,
+            _PokerHand::ThreeOfKind => 3,
+            _PokerHand::Straight => 4,
+            _PokerHand::Flush => 5,
+            _PokerHand::FullHouse => 6,
+            _PokerHand::FourOfKind => 7,
+            _PokerHand::StraightFlush => 8,
+            _PokerHand::RoyalFlush => 9,
+        }
+    }
+}
+
 pub struct Poker {
     pub players: i32,
     pub hand_size: i32,
@@ -22,7 +41,8 @@ pub struct Poker {
 }
 
 impl Poker {
-    fn new(players: i32, hand_size: i32, cards_on_table: i32) -> Poker {
+    //initialization for custom game of hold em
+    fn _new(players: i32, hand_size: i32, cards_on_table: i32) -> Poker {
         let deck = DeckInGame::new();
 
         Poker {
@@ -44,9 +64,14 @@ impl Poker {
     }
 }
 
+struct _PlayerHand {
+    hand: Vec<Card>,
+}
+
 fn main() {
     let mut poker = Poker::new_texas_hold_em(4);
     let mut poker2 = Poker::new_texas_hold_em(4);
+
     poker.deck.shuffle_cards();
     let mut i: u128 = 0;
     while i < u128::MAX {
@@ -60,13 +85,13 @@ fn main() {
         i += 1;
     }
 
-    let card = poker.deck.top_card();
+    let _card = poker.deck.top_card();
     let card = poker2.deck.top_card();
     // let card = deck.top_card();
     // let card = deck.top_card();
     // deck.shuffle_cards();
 
-    // println!("{:#?}", card);
+    println!("{:#?}", card);
     println!("{:#?}", poker.deck.cards);
     poker.deck.shuffle_cards();
     println!("pasa");

@@ -9,7 +9,7 @@ pub enum Suit {
 }
 
 impl Suit {
-    fn self_value(&self) -> &str {
+    fn _self_value(&self) -> &str {
         match *self {
             Suit::Hearts => "HEARTS",
             Suit::Diamonds => "DIAMONDS",
@@ -55,7 +55,7 @@ pub const VALUES: [Value; 13] = [
 ];
 
 impl Value {
-    fn self_value(&self) -> i32 {
+    fn _self_value(&self) -> i32 {
         match *self {
             Value::Two => 2,
             Value::Three => 3,
@@ -73,7 +73,7 @@ impl Value {
         }
     }
 
-    fn from_char(ch: char) -> Result<Value, &'static str> {
+    fn _from_char(ch: char) -> Result<Value, &'static str> {
         let rank = match ch {
             '2' => Value::Two,
             '3' => Value::Three,
