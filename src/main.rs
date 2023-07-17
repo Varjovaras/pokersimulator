@@ -1,6 +1,6 @@
 mod deck;
 use deck::Card;
-use deck::DeckInGame;
+use deck::Deck;
 
 #[warn(dead_code)]
 enum _PokerHand {
@@ -37,14 +37,13 @@ pub struct Poker {
     pub players: i32,
     pub hand_size: i32,
     pub cards_on_table: i32,
-    pub deck: DeckInGame,
+    pub deck: Deck,
 }
 
 impl Poker {
     //initialization for custom game of hold em
     fn _new(players: i32, hand_size: i32, cards_on_table: i32) -> Poker {
-        let deck = DeckInGame::new();
-
+        let deck = Deck::new();
         Poker {
             players,
             hand_size,
@@ -54,7 +53,7 @@ impl Poker {
     }
 
     fn new_texas_hold_em(players: i32) -> Poker {
-        let deck = DeckInGame::new();
+        let deck = Deck::new();
         Poker {
             players,
             hand_size: 2,
@@ -94,7 +93,5 @@ fn main() {
     println!("{:#?}", card);
     println!("{:#?}", poker.deck.cards);
     poker.deck.shuffle_cards();
-    println!("pasa");
-    println!("{:#?}", poker.deck.cards_dealt);
     // println!("{:#?}", card);
 }

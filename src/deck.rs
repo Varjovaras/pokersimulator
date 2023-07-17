@@ -1,4 +1,5 @@
 use rand::{seq::SliceRandom, thread_rng};
+use std::cmp;
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub enum Suit {
@@ -23,19 +24,19 @@ pub const SUITS: [Suit; 4] = [Suit::Hearts, Suit::Diamonds, Suit::Clubs, Suit::S
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub enum Value {
-    Two,
-    Three,
-    Four,
-    Five,
-    Six,
-    Seven,
-    Eight,
-    Nine,
-    Ten,
-    Jack,
-    Queen,
-    King,
-    Ace,
+    Two = 2,
+    Three = 3,
+    Four = 4,
+    Five = 5,
+    Six = 6,
+    Seven = 7,
+    Eight = 8,
+    Nine = 9,
+    Ten = 10,
+    Jack = 11,
+    Queen = 12,
+    King = 13,
+    Ace = 14,
 }
 
 pub const VALUES: [Value; 13] = [
@@ -92,6 +93,12 @@ impl Value {
         };
         Ok(rank)
     }
+
+    pub fn diff(self, other: Self) -> u8 {
+        let min = cmp::min(self as u8, other as u8);
+        let max = cmp::max(self as u8, other as u8);
+        max - min
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
@@ -106,45 +113,46 @@ impl Card {
     }
 }
 
-pub struct DeckInGame {
+#[derive(PartialEq)]
+pub struct Deck {
     pub cards: Vec<Card>,
-    pub cards_dealt: Vec<Card>,
 }
 
-impl DeckInGame {
-    pub fn new() -> DeckInGame {
-        let mut deck = Vec::new();
+impl Deck {
+    pub fn new() -> Deck {
+        let mut cards = Vec::new();
         for suit in SUITS {
             for value in VALUES {
                 let card = Card::new(suit, value);
-                deck.push(card);
+                cards.push(card);
             }
         }
-        DeckInGame {
-            cards: deck,
-            cards_dealt: Vec::new(),
-        }
+        Deck { cards }
+    }
+
+    pub fn new_empty_deck() -> Deck {
+        let cards = Vec::new();
+        Deck { cards }
     }
 
     pub fn shuffle_cards(&mut self) -> () {
         let mut rng = thread_rng();
-        for _i in 0..self.cards_dealt.len() {
-            match self.cards_dealt.pop() {
-                Some(card) => self.cards.push(card),
-                None => panic!("No card while trying to push from cards_to_table to cards"),
-            }
-        }
         self.cards.shuffle(&mut rng);
     }
 
     pub fn top_card(&mut self) -> Card {
-        let card = self.cards.pop();
-        match card {
-            Some(card) => {
-                self.cards_dealt.push(card.clone());
-                return card;
-            }
-            None => todo!(""),
-        };
+        self.cards[0]
+    }
+
+    pub fn contains_card(&self, c: &Card) -> bool {
+        self.cards.contains(c)
+    }
+
+    pub fn add_card(&mut self, c: Card) {
+        self.cards.push(c);
+    }
+
+    pub fn len(&self) -> usize {
+        self.cards.len()
     }
 }
