@@ -1,5 +1,5 @@
 mod deck;
-mod poker;
+mod hand_calculator;
 use deck::{Card, Deck};
 
 pub struct Game {

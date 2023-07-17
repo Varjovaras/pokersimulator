@@ -1,6 +1,6 @@
 use crate::deck::{Card, Suit};
 
-pub enum PokerHands {
+pub enum HandValues {
     HighCard = 0,
     OnePair = 1,
     TwoPair = 2,
@@ -13,21 +13,24 @@ pub enum PokerHands {
     RoyalFlush = 9,
 }
 
-impl PokerHands {}
+impl HandValues {}
 
-pub struct PokerHand {
+pub struct Hand {
     hand: Vec<Card>,
 }
 
-impl PokerHand {
-    pub fn hand_value(&self) -> PokerHands {
+impl Hand {
+    pub fn hand_value(&self) -> HandValues {
         if self.hand.len() < 5 {
             panic!("Hand size too small");
         }
-        return PokerHands::RoyalFlush;
+
+        let is_flush: bool = self.is_flush();
+        let is_straight: bool = self.is_straight();
+        return HandValues::RoyalFlush;
     }
 
-    pub fn is_flush(&self) -> Option<Suit> {
+    pub fn is_flush(&self) -> bool {
         let mut hearts: u8 = 0;
         let mut diamonds: u8 = 0;
         let mut clubs: u8 = 0;
@@ -40,17 +43,13 @@ impl PokerHand {
                 Suit::Spades => spades += 1,
             }
         }
+        if hearts >= 5 || diamonds >= 5 || clubs >= 5 || spades >= 5 {
+            return true;
+        }
+        return false;
+    }
 
-        if hearts >= 5 {
-            return Some(Suit::Hearts);
-        } else if diamonds >= 5 {
-            return Some(Suit::Diamonds);
-        } else if clubs >= 5 {
-            return Some(Suit::Clubs);
-        } else if spades > 5 {
-            return Some(Suit::Spades);
-        } else {
-            return None;
-        };
+    fn is_straight(&self) -> bool {
+        todo!()
     }
 }
