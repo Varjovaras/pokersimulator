@@ -1,5 +1,5 @@
 use crate::deck::{Card, Suit, Value};
-
+#[derive(Debug, PartialEq)]
 pub enum HandValues {
     HighCard = 0,
     OnePair,
@@ -15,19 +15,31 @@ pub enum HandValues {
 
 impl HandValues {}
 
+#[derive(Debug)]
 pub struct Hand {
-    hand: Vec<Card>,
-    value: HandValues,
+    pub hand: Vec<Card>,
+    pub value: HandValues,
 }
 
 impl Hand {
-    pub fn hand_value(&self) -> HandValues {
+    pub fn new(cards: Vec<Card>) -> Hand {
+        return Hand {
+            hand: cards,
+            value: HandValues::HighCard,
+        };
+    }
+
+    pub fn hand_value(&mut self) {
         if self.hand.len() < 5 {
             panic!("Hand size too small");
         }
         let is_flush: bool = self.is_flush();
         let is_straight: bool = self.is_straight();
-        return HandValues::RoyalFlush;
+        if is_straight {
+            self.value = HandValues::Straight;
+            return;
+        }
+        self.value = HandValues::RoyalFlush;
     }
 
     fn is_flush(&self) -> bool {
@@ -96,6 +108,50 @@ impl Hand {
             }
         }
 
+        let mut straight_helper = 0;
+        for i in values {
+            println!("{}", straight_helper);
+            if i == 0 {
+                straight_helper = 0;
+                continue;
+            }
+            straight_helper += 1;
+            if straight_helper == 5 {
+                return true;
+            }
+        }
+
         todo!()
+    }
+}
+
+#[cfg(test)]
+mod tests {
+
+    use crate::{
+        deck::Card,
+        hand_calculator::{self, HandValues},
+        Game,
+    };
+
+    #[test]
+    fn test_is_straight() {
+        let mut poker = Game::new_texas_hold_em(4);
+
+        let mut cards: Vec<Card> = Vec::new();
+        for i in 0..7 {
+            cards.push(poker.deck.cards[i]);
+        }
+
+        let mut hand = hand_calculator::Hand::new(cards);
+        hand.hand_value();
+
+        println!("{:#?}", hand.value);
+        println!("{:#?}", hand.hand);
+
+        assert_eq!(hand.value, HandValues::Straight);
+
+        // This assert would fire and test will fail.
+        // Please note, that private functions can be tested too!
     }
 }

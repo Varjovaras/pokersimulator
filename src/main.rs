@@ -40,27 +40,24 @@ fn main() {
     let mut poker = Game::new_texas_hold_em(4);
     let mut poker2 = Game::new_texas_hold_em(4);
 
-    poker.deck.shuffle_cards();
-    let mut i: u128 = 0;
-    while i < u128::MAX {
-        poker2.deck.shuffle_cards();
-        if i % 10000 == 0 {
-            println!("{}", i);
-        }
-        if poker.deck.cards == poker2.deck.cards {
-            panic!("decks are equa");
-        }
-        i += 1;
-    }
+    // poker.deck.shuffle_cards();
+    // let mut i: u128 = 0;
+    // while i < u128::MAX {
+    //     poker2.deck.shuffle_cards();
+    //     if i % 10000 == 0 {
+    //         println!("{}", i);
+    //     }
+    //     if poker.deck.cards == poker2.deck.cards {
+    //         panic!("decks are equa");
+    //     }
+    //     i += 1;
+    // }
 
-    let _card = poker.deck.top_card();
-    let card = poker2.deck.top_card();
     // let card = deck.top_card();
     // let card = deck.top_card();
     // deck.shuffle_cards();
 
-    println!("{:#?}", card);
-    println!("{:#?}", poker.deck.cards);
+    // println!("{:#?}", poker.deck.cards);
     poker.deck.shuffle_cards();
     // println!("{:#?}", card);
 }
