@@ -95,7 +95,7 @@ impl Value {
         Ok(rank)
     }
 
-    pub fn diff(self, other: Self) -> u8 {
+    pub fn _diff(self, other: Self) -> u8 {
         let min = cmp::min(self as u8, other as u8);
         let max = cmp::max(self as u8, other as u8);
         max - min
@@ -131,7 +131,7 @@ impl Deck {
         Deck { cards }
     }
 
-    pub fn new_empty_deck() -> Deck {
+    pub fn _new_empty_deck() -> Deck {
         let cards = Vec::new();
         Deck { cards }
     }
@@ -145,15 +145,15 @@ impl Deck {
         self.cards[0]
     }
 
-    pub fn contains_card(&self, c: &Card) -> bool {
+    pub fn _contains_card(&self, c: &Card) -> bool {
         self.cards.contains(c)
     }
 
-    pub fn add_card(&mut self, c: Card) {
+    pub fn _add_card(&mut self, c: Card) {
         self.cards.push(c);
     }
 
-    pub fn len(&self) -> usize {
+    pub fn _len(&self) -> usize {
         self.cards.len()
     }
 }

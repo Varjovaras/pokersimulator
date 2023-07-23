@@ -20,8 +20,8 @@ fn main() {
         i += 1;
     }
 
-    let card = poker.deck.top_card();
-    let card = poker.deck.top_card();
+    let _card = poker.deck.top_card();
+    let _card = poker.deck.top_card();
     poker.shuffle_deck();
 
     println!("{:#?}", poker.deck.cards);

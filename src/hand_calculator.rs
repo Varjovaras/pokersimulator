@@ -2,16 +2,16 @@ use crate::deck::{Card, Suit, Value};
 
 #[derive(Debug, PartialEq)]
 pub enum HandValues {
-    HighCard = 0,
-    OnePair,
-    TwoPair,
-    ThreeOfKind,
-    Straight,
-    Flush,
-    FullHouse,
-    FourOfKind,
-    StraightFlush,
-    RoyalFlush,
+    _HighCard = 0,
+    _OnePair,
+    _TwoPair,
+    _ThreeOfKind,
+    _Straight,
+    _Flush,
+    _FullHouse,
+    _FourOfKind,
+    _StraightFlush,
+    _RoyalFlush,
 }
 
 impl HandValues {}
@@ -23,14 +23,14 @@ pub struct Hand {
 }
 
 impl Hand {
-    pub fn new(hand: Vec<Card>) -> Hand {
+    pub fn _new(hand: Vec<Card>) -> Hand {
         return Hand {
             hand,
-            value: HandValues::HighCard,
+            value: HandValues::_HighCard,
         };
     }
 
-    pub fn highest_card(&self) -> Card {
+    pub fn _highest_card(&self) -> Card {
         let mut highest = self.hand[0];
         for i in self.hand.iter() {
             if i.value > highest.value {
@@ -40,20 +40,20 @@ impl Hand {
         return highest;
     }
 
-    pub fn hand_value(&mut self) {
+    pub fn _hand_value(&mut self) {
         if self.hand.len() < 5 {
             panic!("Hand size too small");
         }
-        let is_flush: bool = self.is_flush();
-        let is_straight: bool = self.is_straight();
+        let _is_flush: bool = self._is_flush();
+        let is_straight: bool = self._is_straight();
         if is_straight {
-            self.value = HandValues::Straight;
+            self.value = HandValues::_Straight;
             return;
         }
-        self.value = HandValues::RoyalFlush;
+        self.value = HandValues::_RoyalFlush;
     }
 
-    fn is_flush(&self) -> bool {
+    pub fn _is_flush(&self) -> bool {
         let mut hearts: u8 = 0;
         let mut diamonds: u8 = 0;
         let mut clubs: u8 = 0;
@@ -72,7 +72,7 @@ impl Hand {
         return false;
     }
 
-    fn is_straight(&self) -> bool {
+    fn _is_straight(&self) -> bool {
         let mut values = [0; 14];
         for card in self.hand.iter() {
             match card.value {
@@ -143,20 +143,20 @@ mod tests {
 
     #[test]
     fn test_is_straight() {
-        let mut poker = Poker::new_texas_hold_em(4);
+        let poker = Poker::new_texas_hold_em(4);
 
         let mut cards: Vec<Card> = Vec::new();
         for i in 0..7 {
             cards.push(poker.deck.cards[i]);
         }
 
-        let mut hand = Hand::new(cards);
-        hand.hand_value();
+        let mut hand = Hand::_new(cards);
+        hand._hand_value();
 
         println!("{:#?}", hand.value);
         println!("{:#?}", hand.hand);
 
-        assert_eq!(hand.value, HandValues::Straight);
+        assert_eq!(hand.value, HandValues::_Straight);
 
         // This assert would fire and test will fail.
         // Please note, that private functions can be tested too!
