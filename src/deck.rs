@@ -22,7 +22,7 @@ impl Suit {
 
 pub const SUITS: [Suit; 4] = [Suit::Hearts, Suit::Diamonds, Suit::Clubs, Suit::Spades];
 
-#[derive(Debug, Clone, Copy, PartialEq)]
+#[derive(Debug, Clone, Copy, PartialEq, PartialOrd)]
 
 pub enum Value {
     Two = 0,

@@ -22,11 +22,21 @@ pub struct Hand {
 }
 
 impl Hand {
-    pub fn new(cards: Vec<Card>) -> Hand {
+    pub fn new(hand: Vec<Card>) -> Hand {
         return Hand {
-            hand: cards,
+            hand,
             value: HandValues::HighCard,
         };
+    }
+
+    pub fn highest_card(&self) -> Card {
+        let mut highest = self.hand[0];
+        for i in self.hand.iter() {
+            if i.value > highest.value {
+                highest = *i;
+            }
+        }
+        return highest.clone();
     }
 
     pub fn hand_value(&mut self) {
