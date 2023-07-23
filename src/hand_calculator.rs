@@ -1,4 +1,5 @@
 use crate::deck::{Card, Suit, Value};
+
 #[derive(Debug, PartialEq)]
 pub enum HandValues {
     HighCard = 0,
@@ -36,7 +37,7 @@ impl Hand {
                 highest = *i;
             }
         }
-        return highest.clone();
+        return highest;
     }
 
     pub fn hand_value(&mut self) {
@@ -118,15 +119,15 @@ impl Hand {
             }
         }
 
-        let mut straight_helper = 0;
+        let mut cards_in_a_row = 0;
         for i in values {
-            println!("{}", straight_helper);
+            println!("{}", cards_in_a_row);
             if i == 0 {
-                straight_helper = 0;
+                cards_in_a_row = 0;
                 continue;
             }
-            straight_helper += 1;
-            if straight_helper == 5 {
+            cards_in_a_row += 1;
+            if cards_in_a_row == 5 {
                 return true;
             }
         }
@@ -137,23 +138,19 @@ impl Hand {
 
 #[cfg(test)]
 mod tests {
-
-    use crate::{
-        deck::Card,
-        hand_calculator::{self, HandValues},
-        Game,
-    };
+    use super::*;
+    use crate::Poker;
 
     #[test]
     fn test_is_straight() {
-        let mut poker = Game::new_texas_hold_em(4);
+        let mut poker = Poker::new_texas_hold_em(4);
 
         let mut cards: Vec<Card> = Vec::new();
         for i in 0..7 {
             cards.push(poker.deck.cards[i]);
         }
 
-        let mut hand = hand_calculator::Hand::new(cards);
+        let mut hand = Hand::new(cards);
         hand.hand_value();
 
         println!("{:#?}", hand.value);
