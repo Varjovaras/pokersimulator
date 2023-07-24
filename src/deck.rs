@@ -141,7 +141,7 @@ impl Deck {
         self.cards.shuffle(&mut rng);
     }
 
-    pub fn top_card(&mut self) -> Card {
+    pub fn _top_card(&mut self) -> Card {
         match self.cards.pop() {
             Some(card) => card,
             None => panic!("No cards left in deck"),
@@ -158,5 +158,21 @@ impl Deck {
 
     pub fn _len(&self) -> usize {
         self.cards.len()
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn contains_card_works() {
+        let mut deck = Deck::new();
+        assert!(deck._contains_card(&Card::new(Suit::Hearts, Value::Ace)));
+        assert!(deck._contains_card(&Card::new(Suit::Clubs, Value::Five)));
+        assert!(deck._contains_card(&Card::new(Suit::Spades, Value::Jack)));
+        assert!(deck._contains_card(&Card::new(Suit::Diamonds, Value::Two)));
+        let _card = deck._top_card();
+        assert!(!deck._contains_card(&_card));
     }
 }

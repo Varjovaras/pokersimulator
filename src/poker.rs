@@ -11,18 +11,16 @@ pub struct Poker {
 impl Poker {
     //initialization for custom game of hold em
     pub fn _new(player_amount: i32, hand_size: i32, cards_on_table: i32) -> Poker {
-        let deck = Deck::new();
         Poker {
             player_amount,
             players: Vec::new(),
             hand_size,
             cards_on_table,
-            deck,
+            deck: Deck::new(),
         }
     }
 
     pub fn new_texas_hold_em(player_amount: i32) -> Poker {
-        let deck = Deck::new();
         let mut players: Vec<Player> = Vec::new();
         for _ in 0..player_amount {
             players.push(Player::_new(1000));
@@ -32,7 +30,7 @@ impl Poker {
             players: players,
             hand_size: 2,
             cards_on_table: 5,
-            deck,
+            deck: Deck::new(),
         }
     }
 
@@ -43,7 +41,7 @@ impl Poker {
     pub fn _deal_cards(&mut self) {
         for _ in 0..self.hand_size {
             for player in &mut self.players {
-                player.deal_card(self.deck.top_card());
+                player._deal_card(self.deck._top_card());
             }
         }
     }
@@ -72,7 +70,7 @@ impl Player {
         }
     }
 
-    pub fn deal_card(&mut self, card: Card) {
+    pub fn _deal_card(&mut self, card: Card) {
         self.hand.push(card);
     }
 
@@ -106,6 +104,7 @@ mod tests {
         poker._deal_cards();
         assert_eq!(poker.players[0].hand.len(), 2);
         assert_eq!(poker.players[1].hand.len(), 2);
+        assert_ne!(poker.players[0].hand, poker.players[1].hand);
         assert_ne!(poker.players[0].hand, poker.players[1].hand);
         assert_eq!(poker.players[0].hand[0].suit, Suit::Spades);
         assert_eq!(poker.players[0].hand[0].value, Value::King);
