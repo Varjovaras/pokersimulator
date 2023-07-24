@@ -1,6 +1,6 @@
 use crate::deck::{Card, Suit, Value};
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, Clone, Copy, PartialEq)]
 pub enum HandValues {
     _HighCard = 0,
     _OnePair,
@@ -28,6 +28,21 @@ impl Hand {
             hand,
             value: HandValues::_HighCard,
         };
+    }
+
+    pub fn _add_card(&mut self, card: Card) {
+        self.hand.push(card);
+    }
+
+    pub fn _new_empty_hand() -> Hand {
+        return Hand {
+            hand: Vec::new(),
+            value: HandValues::_HighCard,
+        };
+    }
+
+    pub fn _empty_hand(&mut self) {
+        self.hand = Vec::new();
     }
 
     pub fn _highest_card(&self) -> Card {

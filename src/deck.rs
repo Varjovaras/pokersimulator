@@ -142,7 +142,10 @@ impl Deck {
     }
 
     pub fn top_card(&mut self) -> Card {
-        self.cards[0]
+        match self.cards.pop() {
+            Some(card) => card,
+            None => panic!("No cards left in deck"),
+        }
     }
 
     pub fn _contains_card(&self, c: &Card) -> bool {
