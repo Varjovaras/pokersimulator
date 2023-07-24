@@ -8,6 +8,53 @@ pub struct Poker {
     pub deck: Deck,
 }
 
+impl Poker {
+    //initialization for custom game of hold em
+    pub fn _new(player_amount: i32, hand_size: i32, cards_on_table: i32) -> Poker {
+        let deck = Deck::new();
+        Poker {
+            player_amount,
+            players: Vec::new(),
+            hand_size,
+            cards_on_table,
+            deck,
+        }
+    }
+
+    pub fn new_texas_hold_em(player_amount: i32) -> Poker {
+        let deck = Deck::new();
+        let mut players: Vec<Player> = Vec::new();
+        for _ in 0..player_amount {
+            players.push(Player::_new(1000));
+        }
+        Poker {
+            player_amount,
+            players: players,
+            hand_size: 2,
+            cards_on_table: 5,
+            deck,
+        }
+    }
+
+    pub fn shuffle_deck(&mut self) {
+        self.deck.shuffle_cards();
+    }
+
+    pub fn _deal_cards(&mut self) {
+        for _ in 0..self.hand_size {
+            for player in &mut self.players {
+                player.deal_card(self.deck.top_card());
+            }
+        }
+    }
+
+    pub fn _new_player(&mut self, chips: i32) {
+        self.player_amount += 1;
+        self.players.push(Player::_new(chips));
+    }
+}
+
+#[derive(Debug)]
 pub struct Player {
     pub hand: Vec<Card>,
     pub chips: i32,
@@ -25,7 +72,7 @@ impl Player {
         }
     }
 
-    pub fn _add_card(&mut self, card: Card) {
+    pub fn deal_card(&mut self, card: Card) {
         self.hand.push(card);
     }
 
@@ -47,33 +94,20 @@ impl Player {
     }
 }
 
-impl Poker {
-    //initialization for custom game of hold em
-    pub fn _new(player_amount: i32, hand_size: i32, cards_on_table: i32) -> Poker {
-        let deck = Deck::new();
-        Poker {
-            player_amount,
-            players: Vec::new(),
-            hand_size,
-            cards_on_table,
-            deck,
-        }
-    }
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::deck::{Suit, Value};
 
-    pub fn new_texas_hold_em(player_amount: i32) -> Poker {
-        let deck = Deck::new();
-        Poker {
-            player_amount,
-            players: Vec::new(),
-            hand_size: 2,
-            cards_on_table: 5,
-            deck,
-        }
+    #[test]
+    fn dealing_cards_work() {
+        let mut poker = Poker::new_texas_hold_em(8);
+        poker._new_player(1000);
+        poker._deal_cards();
+        assert_eq!(poker.players[0].hand.len(), 2);
+        assert_eq!(poker.players[1].hand.len(), 2);
+        assert_ne!(poker.players[0].hand, poker.players[1].hand);
+        assert_eq!(poker.players[0].hand[0].suit, Suit::Spades);
+        assert_eq!(poker.players[0].hand[0].value, Value::King);
     }
-
-    pub fn shuffle_deck(&mut self) {
-        self.deck.shuffle_cards();
-    }
-
-    pub fn _deal_cards(&mut self) {}
 }

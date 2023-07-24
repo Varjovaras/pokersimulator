@@ -114,7 +114,7 @@ impl Card {
     }
 }
 
-#[derive(PartialEq)]
+#[derive(PartialEq, Debug)]
 pub struct Deck {
     pub cards: Vec<Card>,
 }

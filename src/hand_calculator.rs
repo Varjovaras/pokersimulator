@@ -172,8 +172,5 @@ mod tests {
         println!("{:#?}", hand.hand);
 
         assert_eq!(hand.value, HandValues::_Straight);
-
-        // This assert would fire and test will fail.
-        // Please note, that private functions can be tested too!
     }
 }
