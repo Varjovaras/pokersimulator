@@ -2,16 +2,16 @@ use crate::deck::{Card, Suit, Value};
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub enum HandValues {
-    _HighCard = 0,
-    _OnePair,
-    _TwoPair,
-    _ThreeOfKind,
-    _Straight,
-    _Flush,
-    _FullHouse,
-    _FourOfKind,
-    _StraightFlush,
-    _RoyalFlush,
+    HighCard = 0,
+    OnePair,
+    TwoPair,
+    ThreeOfKind,
+    Straight,
+    Flush,
+    FullHouse,
+    FourOfKind,
+    StraightFlush,
+    RoyalFlush,
 }
 
 impl HandValues {}
@@ -26,7 +26,7 @@ impl Hand {
     pub fn _new(hand: Vec<Card>) -> Hand {
         return Hand {
             hand,
-            value: HandValues::_HighCard,
+            value: HandValues::HighCard,
         };
     }
 
@@ -37,7 +37,7 @@ impl Hand {
     pub fn _new_empty_hand() -> Hand {
         return Hand {
             hand: Vec::new(),
-            value: HandValues::_HighCard,
+            value: HandValues::HighCard,
         };
     }
 
@@ -55,17 +55,30 @@ impl Hand {
         return highest;
     }
 
-    pub fn _hand_value(&mut self) {
+    pub fn hand_value(&mut self) {
         if self.hand.len() < 5 {
             panic!("Hand size too small");
         }
         let _is_flush: bool = self._is_flush();
         let is_straight: bool = self._is_straight();
-        if is_straight {
-            self.value = HandValues::_Straight;
+        if is_straight && _is_flush {
+            // if self._is_royal_flush() {
+            //     self.value = HandValues::RoyalFlush;
+            // } else {
+            //     self.value = HandValues::StraightFlush;
+            // }
+            self.value = HandValues::StraightFlush;
             return;
         }
-        self.value = HandValues::_RoyalFlush;
+
+        // if self._is_four_of_kind() {
+        //     self.value = HandValues::FourOfKind;
+        //     return;
+        // }
+    }
+
+    pub fn _is_royal_flush(&self) -> bool {
+        todo!("Implement later");
     }
 
     pub fn _is_flush(&self) -> bool {
@@ -88,7 +101,28 @@ impl Hand {
     }
 
     fn _is_straight(&self) -> bool {
-        let mut values = [0; 14];
+        let mut values = self.card_helper();
+        let mut cards_in_a_row = 0;
+        for i in values {
+            if i == 10 && cards_in_a_row == 0 {
+                break;
+            }
+            println!("{}", cards_in_a_row);
+            if i == 0 {
+                cards_in_a_row = 0;
+                continue;
+            }
+            cards_in_a_row += 1;
+            if cards_in_a_row == 5 {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    fn card_helper(&self) -> [u8; 14] {
+        let mut values: [u8; 14] = [0; 14];
         for card in self.hand.iter() {
             match card.value {
                 Value::Two => {
@@ -133,21 +167,7 @@ impl Hand {
                 }
             }
         }
-
-        let mut cards_in_a_row = 0;
-        for i in values {
-            println!("{}", cards_in_a_row);
-            if i == 0 {
-                cards_in_a_row = 0;
-                continue;
-            }
-            cards_in_a_row += 1;
-            if cards_in_a_row == 5 {
-                return true;
-            }
-        }
-
-        todo!()
+        values
     }
 }
 
@@ -157,20 +177,16 @@ mod tests {
     use crate::Poker;
 
     #[test]
-    fn test_is_straight() {
+    fn straight_flush_works() {
         let poker = Poker::new_texas_hold_em(4);
 
         let mut cards: Vec<Card> = Vec::new();
-        for i in 0..7 {
+        for i in 0..poker.total_cards as usize {
             cards.push(poker.deck.cards[i]);
         }
 
         let mut hand = Hand::_new(cards);
-        hand._hand_value();
-
-        println!("{:#?}", hand.value);
-        println!("{:#?}", hand.hand);
-
-        assert_eq!(hand.value, HandValues::_Straight);
+        hand.hand_value();
+        assert_eq!(hand.value, HandValues::StraightFlush);
     }
 }

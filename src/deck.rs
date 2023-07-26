@@ -173,6 +173,7 @@ mod tests {
         assert!(deck._contains_card(&Card::new(Suit::Spades, Value::Jack)));
         assert!(deck._contains_card(&Card::new(Suit::Diamonds, Value::Two)));
         let _card = deck._top_card();
+
         assert!(!deck._contains_card(&_card));
     }
 }

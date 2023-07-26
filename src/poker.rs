@@ -5,6 +5,7 @@ pub struct Poker {
     pub players: Vec<Player>,
     pub hand_size: i32,
     pub cards_on_table: i32,
+    pub total_cards: i32,
     pub deck: Deck,
 }
 
@@ -16,6 +17,7 @@ impl Poker {
             players: Vec::new(),
             hand_size,
             cards_on_table,
+            total_cards: hand_size + cards_on_table,
             deck: Deck::new(),
         }
     }
@@ -27,9 +29,10 @@ impl Poker {
         }
         Poker {
             player_amount,
-            players: players,
+            players,
             hand_size: 2,
             cards_on_table: 5,
+            total_cards: 7,
             deck: Deck::new(),
         }
     }
