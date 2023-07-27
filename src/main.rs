@@ -1,6 +1,6 @@
 mod deck;
 mod hand;
-mod hand_calculator;
+mod hand_value_calculator;
 mod poker;
 
 use poker::Poker;

@@ -1,6 +1,6 @@
 use crate::{
     deck::Card,
-    hand_calculator::{self, HandValues, _is_straight, is_flush},
+    hand_value_calculator::{self, HandValues, _is_straight, is_flush},
 };
 
 #[derive(Debug)]
@@ -46,7 +46,7 @@ impl Hand {
         if self.cards.len() < 5 {
             panic!("Hand size too small");
         }
-        let mut values = hand_calculator::card_helper(self);
+        let mut values = hand_value_calculator::card_helper(self);
 
         let _is_flush: bool = is_flush(self);
         let is_straight: bool = _is_straight(values);
