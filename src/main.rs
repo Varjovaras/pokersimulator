@@ -1,13 +1,11 @@
 mod deck;
+mod hand;
 mod hand_calculator;
 mod poker;
 
 use poker::Poker;
 
-use crate::{
-    deck::Card,
-    hand_calculator::{Hand, HandValues},
-};
+use crate::deck::Card;
 
 fn main() {
     let mut poker = Poker::new_texas_hold_em(4);
@@ -16,9 +14,15 @@ fn main() {
     poker.shuffle_deck();
     let mut i: u128 = 0;
     while i < u128::MAX {
-        poker2.shuffle_deck();
-        if i % 10000 == 0 {
+        // poker2.shuffle_deck();
+        if i % 1000000000 == 0 {
             println!("{}", i);
+        }
+        if i == 1000000000000000 {
+            println!("{}", i);
+            println!("pasalusta");
+
+            break;
         }
         if poker.deck.cards == poker2.deck.cards {
             panic!("decks are equal");
@@ -41,7 +45,7 @@ fn main() {
         cards.push(poker.deck.cards[i]);
     }
 
-    let mut hand = Hand::_new(cards);
+    let mut hand = hand::Hand::_new(cards);
     println!("{:?}", hand);
 
     hand.hand_value();
