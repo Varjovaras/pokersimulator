@@ -1,6 +1,8 @@
 use crate::{
     deck::Card,
-    hand_value_calculator::{self, HandValues, _is_straight, is_flush},
+    hand_value_calculator::{
+        self, _is_straight, card_helper, is_flush, is_four_of_kind, is_full_house, HandValues,
+    },
 };
 
 #[derive(Debug)]
@@ -10,11 +12,9 @@ pub struct Hand {
 }
 
 impl Hand {
-    pub fn _new(hand: Vec<Card>) -> Hand {
-        return Hand {
-            cards: hand,
-            value: HandValues::HighCard,
-        };
+    pub fn _new(cards: Vec<Card>) -> Hand {
+        let value = hand_value_calculator::hand_value(&cards);
+        return Hand { cards, value };
     }
 
     pub fn _add_card(&mut self, card: Card) {
@@ -42,22 +42,26 @@ impl Hand {
         return highest;
     }
 
-    pub fn hand_value(&mut self) {
-        if self.cards.len() < 5 {
-            panic!("Hand size too small");
-        }
-        let mut values = hand_value_calculator::card_helper(self);
+    pub fn hand_value(&self) -> HandValues {
+        return hand_value_calculator::hand_value(&self.cards);
+    }
+}
 
-        let _is_flush: bool = is_flush(self);
-        let is_straight: bool = _is_straight(values);
-        if is_straight && _is_flush {
-            // if self._is_royal_flush() {
-            //     self.value = HandValues::RoyalFlush;
-            // } else {
-            //     self.value = HandValues::StraightFlush;
-            // }
-            self.value = HandValues::StraightFlush;
-            return;
+mod tests {
+    use super::*;
+    use crate::{deck::Card, hand::HandValues, Poker};
+
+    #[test]
+    fn straight_flush_works() {
+        let poker = Poker::new_texas_hold_em(4);
+
+        let mut cards: Vec<Card> = Vec::new();
+        for i in 0..poker.total_cards as usize {
+            cards.push(poker.deck.cards[i]);
         }
+
+        let mut hand = Hand::_new(cards);
+        hand.hand_value();
+        assert_eq!(hand.value, HandValues::StraightFlush);
     }
 }

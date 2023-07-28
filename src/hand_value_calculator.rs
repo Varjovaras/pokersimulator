@@ -1,7 +1,4 @@
-use crate::{
-    deck::{Suit, Value},
-    hand::Hand,
-};
+use crate::deck::{Card, Suit, Value};
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub enum HandValues {
@@ -14,14 +11,42 @@ pub enum HandValues {
     FullHouse,
     FourOfKind,
     StraightFlush,
-    RoyalFlush,
+    _RoyalFlush,
 }
 
 impl HandValues {}
 
-pub fn card_helper(hand: &mut Hand) -> [u8; 14] {
+pub fn hand_value(hand: &Vec<Card>) -> HandValues {
+    if hand.len() < 5 {
+        panic!("Hand size too small");
+    }
+    let values = card_helper(&hand);
+
+    let _is_flush: bool = is_flush(&hand);
+    let is_straight: bool = _is_straight(values);
+    if is_straight && _is_flush {
+        // if self._is_royal_flush() {
+        //     self.value = HandValues::RoyalFlush;
+        // } else {
+        //     self.value = HandValues::StraightFlush;
+        // }
+        return HandValues::StraightFlush;
+    }
+
+    if is_four_of_kind(values) {
+        return HandValues::FourOfKind;
+    }
+
+    if is_full_house(values) {
+        return HandValues::FullHouse;
+    }
+
+    return HandValues::HighCard;
+}
+
+pub fn card_helper(cards: &Vec<Card>) -> [u8; 14] {
     let mut values: [u8; 14] = [0; 14];
-    for card in hand.cards.iter() {
+    for card in cards.iter() {
         match card.value {
             Value::Two => {
                 values[1] += 1;
@@ -92,12 +117,12 @@ pub fn _is_straight(values: [u8; 14]) -> bool {
     return false;
 }
 
-pub fn is_flush(hand: &mut Hand) -> bool {
+pub fn is_flush(cards: &Vec<Card>) -> bool {
     let mut hearts: u8 = 0;
     let mut diamonds: u8 = 0;
     let mut clubs: u8 = 0;
     let mut spades: u8 = 0;
-    for card in hand.cards.iter() {
+    for card in cards.iter() {
         match card.suit {
             Suit::Hearts => hearts += 1,
             Suit::Diamonds => diamonds += 1,
@@ -111,7 +136,7 @@ pub fn is_flush(hand: &mut Hand) -> bool {
     return false;
 }
 
-pub fn _is_four_of_kind(values: [u8; 14]) -> bool {
+pub fn is_four_of_kind(values: [u8; 14]) -> bool {
     for i in values {
         if i == 4 {
             return true;
@@ -120,22 +145,6 @@ pub fn _is_four_of_kind(values: [u8; 14]) -> bool {
     return false;
 }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
-    use crate::{deck::Card, Poker};
-
-    #[test]
-    fn straight_flush_works() {
-        let poker = Poker::new_texas_hold_em(4);
-
-        let mut cards: Vec<Card> = Vec::new();
-        for i in 0..poker.total_cards as usize {
-            cards.push(poker.deck.cards[i]);
-        }
-
-        let mut hand = Hand::_new(cards);
-        hand.hand_value();
-        assert_eq!(hand.value, HandValues::StraightFlush);
-    }
+pub fn is_full_house(values: [u8; 14]) -> bool {
+    return values.contains(&3) && values.contains(&2);
 }
