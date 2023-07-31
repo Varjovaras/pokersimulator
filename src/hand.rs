@@ -1,8 +1,6 @@
 use crate::{
     deck::Card,
-    hand_value_calculator::{
-        self, _is_straight, card_helper, is_flush, is_four_of_kind, is_full_house, HandValues,
-    },
+    hand_value_calculator::{self, HandValues},
 };
 
 #[derive(Debug)]
@@ -47,9 +45,11 @@ impl Hand {
     }
 }
 
+#[cfg(test)]
 mod tests {
+    use crate::poker::Poker;
+
     use super::*;
-    use crate::{deck::Card, hand::HandValues, Poker};
 
     #[test]
     fn straight_flush_works() {
@@ -60,7 +60,7 @@ mod tests {
             cards.push(poker.deck.cards[i]);
         }
 
-        let mut hand = Hand::_new(cards);
+        let hand = Hand::_new(cards);
         hand.hand_value();
         assert_eq!(hand.value, HandValues::StraightFlush);
     }

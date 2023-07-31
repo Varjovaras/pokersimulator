@@ -3,13 +3,11 @@ mod hand;
 mod hand_value_calculator;
 mod poker;
 
-use poker::Poker;
-
-use crate::deck::Card;
+use crate::{deck::Card, poker::Poker};
 
 fn main() {
     let mut poker = Poker::new_texas_hold_em(4);
-    let mut poker2 = Poker::new_texas_hold_em(4);
+    let poker2 = Poker::new_texas_hold_em(4);
 
     poker.shuffle_deck();
     let mut i: u128 = 0;
@@ -45,7 +43,7 @@ fn main() {
         cards.push(poker.deck.cards[i]);
     }
 
-    let mut hand = hand::Hand::_new(cards);
+    let hand = hand::Hand::_new(cards);
     println!("{:?}", hand);
 
     hand.hand_value();

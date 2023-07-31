@@ -1,6 +1,7 @@
 use crate::deck::{Card, Suit, Value};
 
 #[derive(Debug, Clone, Copy, PartialEq)]
+#[allow(dead_code)]
 pub enum HandValues {
     HighCard = 0,
     OnePair,
@@ -22,9 +23,9 @@ pub fn hand_value(hand: &Vec<Card>) -> HandValues {
     }
     let values = card_helper(&hand);
 
-    let _is_flush: bool = is_flush(&hand);
-    let is_straight: bool = _is_straight(values);
-    if is_straight && _is_flush {
+    let is_flush: bool = is_flush(&hand);
+    let is_straight: bool = is_straight(values);
+    if is_straight && is_flush {
         // if self._is_royal_flush() {
         //     self.value = HandValues::RoyalFlush;
         // } else {
@@ -41,10 +42,98 @@ pub fn hand_value(hand: &Vec<Card>) -> HandValues {
         return HandValues::FullHouse;
     }
 
-    return HandValues::HighCard;
+    if is_flush {
+        return HandValues::Flush;
+    }
+
+    if is_straight {
+        return HandValues::Straight;
+    }
+
+    if is_three_of_kind(values) {
+        return HandValues::ThreeOfKind;
+    }
+
+    match how_many_pairs(values) {
+        0 => return HandValues::HighCard,
+        1 => return HandValues::OnePair,
+        2 => return HandValues::TwoPair,
+        3 => return HandValues::TwoPair,
+        _ => panic!("Too many pairs"),
+    }
 }
 
-pub fn card_helper(cards: &Vec<Card>) -> [u8; 14] {
+fn _is_royal_flush() -> bool {
+    todo!("Implement later");
+}
+
+fn is_straight(values: [u8; 14]) -> bool {
+    let mut cards_in_a_row: u8 = 0;
+    for i in values {
+        if i == 10 && cards_in_a_row == 0 {
+            break;
+        }
+        println!("{}", cards_in_a_row);
+        if i == 0 {
+            cards_in_a_row = 0;
+            continue;
+        }
+        cards_in_a_row += 1;
+        if cards_in_a_row == 5 {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+fn is_flush(cards: &Vec<Card>) -> bool {
+    let mut hearts: u8 = 0;
+    let mut diamonds: u8 = 0;
+    let mut clubs: u8 = 0;
+    let mut spades: u8 = 0;
+    for card in cards.iter() {
+        match card.suit {
+            Suit::Hearts => hearts += 1,
+            Suit::Diamonds => diamonds += 1,
+            Suit::Clubs => clubs += 1,
+            Suit::Spades => spades += 1,
+        }
+    }
+    if hearts >= 5 || diamonds >= 5 || clubs >= 5 || spades >= 5 {
+        return true;
+    }
+    return false;
+}
+
+fn is_four_of_kind(values: [u8; 14]) -> bool {
+    for i in values {
+        if i == 4 {
+            return true;
+        }
+    }
+    return false;
+}
+
+fn is_full_house(values: [u8; 14]) -> bool {
+    return values.contains(&3) && values.contains(&2);
+}
+
+fn is_three_of_kind(values: [u8; 14]) -> bool {
+    return values.contains(&3) && !values.contains(&2) && !values.contains(&4);
+}
+
+fn how_many_pairs(values: [u8; 14]) -> u8 {
+    let mut pairs: u8 = 0;
+    for i in values {
+        if i == 2 {
+            pairs += 1;
+        }
+    }
+    return pairs;
+}
+
+fn card_helper(cards: &Vec<Card>) -> [u8; 14] {
     let mut values: [u8; 14] = [0; 14];
     for card in cards.iter() {
         match card.value {
@@ -91,60 +180,4 @@ pub fn card_helper(cards: &Vec<Card>) -> [u8; 14] {
         }
     }
     values
-}
-
-pub fn _is_royal_flush() -> bool {
-    todo!("Implement later");
-}
-
-pub fn _is_straight(values: [u8; 14]) -> bool {
-    let mut cards_in_a_row: u8 = 0;
-    for i in values {
-        if i == 10 && cards_in_a_row == 0 {
-            break;
-        }
-        println!("{}", cards_in_a_row);
-        if i == 0 {
-            cards_in_a_row = 0;
-            continue;
-        }
-        cards_in_a_row += 1;
-        if cards_in_a_row == 5 {
-            return true;
-        }
-    }
-
-    return false;
-}
-
-pub fn is_flush(cards: &Vec<Card>) -> bool {
-    let mut hearts: u8 = 0;
-    let mut diamonds: u8 = 0;
-    let mut clubs: u8 = 0;
-    let mut spades: u8 = 0;
-    for card in cards.iter() {
-        match card.suit {
-            Suit::Hearts => hearts += 1,
-            Suit::Diamonds => diamonds += 1,
-            Suit::Clubs => clubs += 1,
-            Suit::Spades => spades += 1,
-        }
-    }
-    if hearts >= 5 || diamonds >= 5 || clubs >= 5 || spades >= 5 {
-        return true;
-    }
-    return false;
-}
-
-pub fn is_four_of_kind(values: [u8; 14]) -> bool {
-    for i in values {
-        if i == 4 {
-            return true;
-        }
-    }
-    return false;
-}
-
-pub fn is_full_house(values: [u8; 14]) -> bool {
-    return values.contains(&3) && values.contains(&2);
 }
