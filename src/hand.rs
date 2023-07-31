@@ -10,7 +10,7 @@ pub struct Hand {
 }
 
 impl Hand {
-    pub fn _new(cards: Vec<Card>) -> Hand {
+    pub fn new(cards: Vec<Card>) -> Hand {
         let value = hand_value_calculator::hand_value(&cards);
         return Hand { cards, value };
     }
@@ -60,7 +60,7 @@ mod tests {
             cards.push(poker.deck.cards[i]);
         }
 
-        let hand = Hand::_new(cards);
+        let hand = Hand::new(cards);
         hand.hand_value();
         assert_eq!(hand.value, HandValues::StraightFlush);
     }

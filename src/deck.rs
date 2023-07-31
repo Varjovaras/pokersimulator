@@ -40,7 +40,7 @@ pub enum Value {
     Ace,
 }
 
-pub const VALUES: [Value; 13] = [
+const VALUES: [Value; 13] = [
     Value::Ace,
     Value::Two,
     Value::Three,

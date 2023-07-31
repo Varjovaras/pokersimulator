@@ -11,7 +11,7 @@ pub struct Poker {
 
 impl Poker {
     //initialization for custom game of hold em
-    pub fn _new(player_amount: i32, hand_size: i32, cards_on_table: i32) -> Poker {
+    pub fn new(player_amount: i32, hand_size: i32, cards_on_table: i32) -> Poker {
         Poker {
             player_amount,
             players: Vec::new(),

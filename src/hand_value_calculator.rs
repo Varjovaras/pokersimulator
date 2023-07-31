@@ -12,7 +12,7 @@ pub enum HandValues {
     FullHouse,
     FourOfKind,
     StraightFlush,
-    _RoyalFlush,
+    RoyalFlush,
 }
 
 impl HandValues {}
@@ -26,12 +26,7 @@ pub fn hand_value(hand: &Vec<Card>) -> HandValues {
     let is_flush: bool = is_flush(&hand);
     let is_straight: bool = is_straight(values);
     if is_straight && is_flush {
-        // if self._is_royal_flush() {
-        //     self.value = HandValues::RoyalFlush;
-        // } else {
-        //     self.value = HandValues::StraightFlush;
-        // }
-        return HandValues::StraightFlush;
+        return is_straight_flush(hand);
     }
 
     if is_four_of_kind(values) {
@@ -54,26 +49,20 @@ pub fn hand_value(hand: &Vec<Card>) -> HandValues {
         return HandValues::ThreeOfKind;
     }
 
+    // println!("{:?}", hand);
+
     match how_many_pairs(values) {
         0 => return HandValues::HighCard,
         1 => return HandValues::OnePair,
         2 => return HandValues::TwoPair,
-        3 => return HandValues::TwoPair,
-        _ => panic!("Too many pairs"),
+        3 => return HandValues::TwoPair, //possible with ace cause checking both 1 and 14
+        _ => return HandValues::HighCard,
     }
-}
-
-fn _is_royal_flush() -> bool {
-    todo!("Implement later");
 }
 
 fn is_straight(values: [u8; 14]) -> bool {
     let mut cards_in_a_row: u8 = 0;
     for i in values {
-        if i == 10 && cards_in_a_row == 0 {
-            break;
-        }
-        println!("{}", cards_in_a_row);
         if i == 0 {
             cards_in_a_row = 0;
             continue;
@@ -83,7 +72,6 @@ fn is_straight(values: [u8; 14]) -> bool {
             return true;
         }
     }
-
     return false;
 }
 
@@ -104,6 +92,50 @@ fn is_flush(cards: &Vec<Card>) -> bool {
         return true;
     }
     return false;
+}
+/*
+* 1. Returns HandValues::RoyalFlush if hand is a royal flush
+* 2. Returns HandValues::StraightFlush if hand is a straight flush
+* 3. Returns HandValues::Flush if hand is a flush
+*/
+
+fn is_straight_flush(hand: &Vec<Card>) -> HandValues {
+    let suits = [Suit::Hearts, Suit::Diamonds, Suit::Clubs, Suit::Spades];
+    let values = [
+        Value::Ace,
+        Value::Two,
+        Value::Three,
+        Value::Four,
+        Value::Five,
+        Value::Six,
+        Value::Seven,
+        Value::Eight,
+        Value::Nine,
+        Value::Ten,
+        Value::Jack,
+        Value::Queen,
+        Value::King,
+        Value::Ace,
+    ];
+
+    let mut straight_in_row: u8;
+    for suit in suits {
+        straight_in_row = 0;
+        for value in values {
+            if !hand.contains(&Card { suit, value }) {
+                straight_in_row = 0;
+                continue;
+            }
+            straight_in_row += 1;
+            if straight_in_row == 5 && value == Value::Ace {
+                return HandValues::RoyalFlush;
+            }
+            if straight_in_row == 5 {
+                return HandValues::StraightFlush;
+            }
+        }
+    }
+    return HandValues::Flush;
 }
 
 fn is_four_of_kind(values: [u8; 14]) -> bool {
