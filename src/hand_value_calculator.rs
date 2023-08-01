@@ -19,7 +19,9 @@ impl HandValues {}
 
 pub fn hand_value(hand: &Vec<Card>) -> HandValues {
     if hand.len() < 5 {
-        panic!("Hand size too small");
+        println!("{:?}", hand);
+        return HandValues::HighCard;
+        // panic!("Hand size too small");
     }
     let values = card_helper(&hand);
 

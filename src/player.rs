@@ -4,6 +4,48 @@ use crate::{
 };
 
 #[derive(Debug)]
+pub struct Player {
+    pub cards: Vec<Card>,
+    pub hand: Hand,
+    pub chips: i32,
+    pub bet: i32,
+    pub folded: bool,
+}
+
+impl Player {
+    pub fn new(chips: i32) -> Player {
+        Player {
+            cards: Vec::new(),
+            hand: Hand::new_empty_hand(),
+            chips,
+            bet: 0,
+            folded: false,
+        }
+    }
+
+    pub fn deal_card(&mut self, card: Card) {
+        self.hand.add_card(card);
+    }
+
+    pub fn empty_hand(&mut self) {
+        self.hand = Hand::new_empty_hand();
+    }
+
+    pub fn _fold(&mut self) {
+        self.folded = true;
+    }
+
+    pub fn _bet(&mut self, amount: i32) {
+        self.bet += amount;
+        self.chips -= amount;
+    }
+
+    pub fn _win(&mut self, amount: i32) {
+        self.chips += amount;
+    }
+}
+
+#[derive(Debug)]
 pub struct Hand {
     pub cards: Vec<Card>,
     pub value: HandValues,
@@ -15,18 +57,18 @@ impl Hand {
         return Hand { cards, value };
     }
 
-    pub fn _add_card(&mut self, card: Card) {
-        self.cards.push(card);
-    }
-
-    pub fn _new_empty_hand() -> Hand {
+    pub fn new_empty_hand() -> Hand {
         return Hand {
             cards: Vec::new(),
             value: HandValues::HighCard,
         };
     }
 
-    pub fn _empty_hand(&mut self) {
+    pub fn add_card(&mut self, card: Card) {
+        self.cards.push(card);
+    }
+
+    pub fn empty_hand(&mut self) {
         self.cards = Vec::new();
     }
 

@@ -23,7 +23,6 @@ impl Suit {
 pub const SUITS: [Suit; 4] = [Suit::Hearts, Suit::Diamonds, Suit::Clubs, Suit::Spades];
 
 #[derive(Debug, Clone, Copy, PartialEq, PartialOrd)]
-
 pub enum Value {
     Two = 0,
     Three,
@@ -141,7 +140,7 @@ impl Deck {
         self.cards.shuffle(&mut rng);
     }
 
-    pub fn _top_card(&mut self) -> Card {
+    pub fn top_card(&mut self) -> Card {
         match self.cards.pop() {
             Some(card) => card,
             None => panic!("No cards left in deck"),
@@ -152,7 +151,7 @@ impl Deck {
         self.cards.contains(c)
     }
 
-    pub fn _add_card(&mut self, c: Card) {
+    pub fn add_card(&mut self, c: Card) {
         self.cards.push(c);
     }
 
@@ -172,7 +171,7 @@ mod tests {
         assert!(deck._contains_card(&Card::new(Suit::Clubs, Value::Five)));
         assert!(deck._contains_card(&Card::new(Suit::Spades, Value::Jack)));
         assert!(deck._contains_card(&Card::new(Suit::Diamonds, Value::Two)));
-        let _card = deck._top_card();
+        let _card = deck.top_card();
 
         assert!(!deck._contains_card(&_card));
     }
