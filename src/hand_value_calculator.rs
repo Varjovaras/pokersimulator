@@ -51,11 +51,7 @@ pub fn hand_value(hand: &Vec<Card>) -> HandValues {
         0 => HandValues::HighCard,
         1 => HandValues::OnePair,
         2 => HandValues::TwoPair,
-        3 => HandValues::TwoPair, //possible with ace cause checking both 1 and 14
-        4 => HandValues::TwoPair, //possible with ace cause checking both 1 and 14
-        _ => {
-            panic!("Too many pairs in hand");
-        }
+        _ => HandValues::TwoPair, //possible with ace cause checking both 1 and 14
     }
 }
 
