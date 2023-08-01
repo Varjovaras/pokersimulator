@@ -15,8 +15,6 @@ pub enum HandValues {
     RoyalFlush,
 }
 
-impl HandValues {}
-
 pub fn hand_value(hand: &Vec<Card>) -> HandValues {
     if hand.len() < 5 {
         panic!("Hand size too small");
@@ -33,7 +31,7 @@ pub fn hand_value(hand: &Vec<Card>) -> HandValues {
         return HandValues::FourOfKind;
     }
 
-    if is_full_house(values) {
+    if hand_is_full_house(values) {
         return HandValues::FullHouse;
     }
 
@@ -45,18 +43,19 @@ pub fn hand_value(hand: &Vec<Card>) -> HandValues {
         return HandValues::Straight;
     }
 
-    if is_three_of_kind(values) {
+    if hand_is_three_of_kind(values) {
         return HandValues::ThreeOfKind;
     }
 
-    // println!("{:?}", hand);
-
-    match how_many_pairs(values) {
+    match how_many_pairs_in_hand(values) {
         0 => HandValues::HighCard,
         1 => HandValues::OnePair,
         2 => HandValues::TwoPair,
         3 => HandValues::TwoPair, //possible with ace cause checking both 1 and 14
-        _ => HandValues::HighCard,
+        4 => HandValues::TwoPair, //possible with ace cause checking both 1 and 14
+        _ => {
+            panic!("Too many pairs in hand");
+        }
     }
 }
 
@@ -142,23 +141,18 @@ fn is_straight_flush(hand: &Vec<Card>) -> HandValues {
 }
 
 fn is_four_of_kind(values: [u8; 14]) -> bool {
-    for i in values {
-        if i == 4 {
-            return true;
-        }
-    }
-    return false;
+    return values.contains(&4);
 }
 
-fn is_full_house(values: [u8; 14]) -> bool {
+fn hand_is_full_house(values: [u8; 14]) -> bool {
     return values.contains(&3) && values.contains(&2);
 }
 
-fn is_three_of_kind(values: [u8; 14]) -> bool {
-    return values.contains(&3) && !values.contains(&2) && !values.contains(&4);
+fn hand_is_three_of_kind(values: [u8; 14]) -> bool {
+    return values.contains(&3) && !values.contains(&2);
 }
 
-fn how_many_pairs(values: [u8; 14]) -> u8 {
+fn how_many_pairs_in_hand(values: [u8; 14]) -> u8 {
     let mut pairs: u8 = 0;
     for i in values {
         if i == 2 {

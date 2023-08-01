@@ -37,9 +37,8 @@ fn main() {
     // println!("{:#?}", poker.deck.cards[0]);
     // poker.shuffle_deck();
 
-    let mut poker = Poker::new_texas_hold_em(1);
+    let mut poker = Poker::new_texas_hold_em(8);
 
-    poker.shuffle_deck();
     let mut i: u128 = 0;
     let mut royal_flushes: u128 = 0;
     let mut straight_flushes: u128 = 0;
