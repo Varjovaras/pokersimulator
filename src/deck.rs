@@ -151,7 +151,7 @@ impl Deck {
         self.cards.contains(c)
     }
 
-    pub fn add_card(&mut self, c: Card) {
+    pub fn _add_card(&mut self, c: Card) {
         self.cards.push(c);
     }
 

@@ -2,7 +2,6 @@ use core::panic;
 
 use crate::{
     deck::{Card, Deck},
-    hand_value_calculator::HandValues,
     player::{Hand, Player},
 };
 
@@ -59,9 +58,6 @@ impl Poker {
         self.deck = Deck::new();
         self.cards_on_table = Vec::new();
 
-        for player in &mut self.players {
-            player.hand = Hand::new_empty_hand();
-        }
         self.deck.shuffle_cards();
     }
 
@@ -82,10 +78,11 @@ impl Poker {
     pub fn empty_player_hands(&mut self) {
         for player in &mut self.players {
             player.empty_hand();
+            player.hand = Hand::new_empty_hand();
         }
     }
 
-    pub fn new_player(&mut self, chips: i32) {
+    pub fn _new_player(&mut self, chips: i32) {
         self.player_amount += 1;
         self.players.push(Player::new(chips));
     }
@@ -107,14 +104,6 @@ impl Poker {
             }
             player.hand = Hand::new(hand);
         }
-
-        for player in &self.players {
-            if player.hand.value == HandValues::RoyalFlush {
-                println!("{:?}", player.hand.cards);
-                println!("{:?}", player.hand.value);
-                // panic!("royal flush found");
-            }
-        }
     }
 }
 
@@ -134,7 +123,7 @@ mod tests {
     #[test]
     fn dealing_cards_work() {
         let mut poker = Poker::new_texas_hold_em(8);
-        poker.new_player(1000);
+        poker._new_player(1000);
         poker.deal_cards_to_players();
         assert_eq!(poker.players[0].hand.cards.len(), 2);
         assert_eq!(poker.players[1].hand.cards.len(), 2);

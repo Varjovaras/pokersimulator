@@ -1,4 +1,4 @@
-use crate::deck::{Card, Suit, Value};
+use crate::deck::{self, Card, Suit, Value};
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 #[allow(dead_code)]
@@ -19,9 +19,7 @@ impl HandValues {}
 
 pub fn hand_value(hand: &Vec<Card>) -> HandValues {
     if hand.len() < 5 {
-        println!("{:?}", hand);
-        return HandValues::HighCard;
-        // panic!("Hand size too small");
+        panic!("Hand size too small");
     }
     let values = card_helper(&hand);
 
@@ -54,11 +52,11 @@ pub fn hand_value(hand: &Vec<Card>) -> HandValues {
     // println!("{:?}", hand);
 
     match how_many_pairs(values) {
-        0 => return HandValues::HighCard,
-        1 => return HandValues::OnePair,
-        2 => return HandValues::TwoPair,
-        3 => return HandValues::TwoPair, //possible with ace cause checking both 1 and 14
-        _ => return HandValues::HighCard,
+        0 => HandValues::HighCard,
+        1 => HandValues::OnePair,
+        2 => HandValues::TwoPair,
+        3 => HandValues::TwoPair, //possible with ace cause checking both 1 and 14
+        _ => HandValues::HighCard,
     }
 }
 
@@ -95,14 +93,14 @@ fn is_flush(cards: &Vec<Card>) -> bool {
     }
     return false;
 }
-/*
+
+/**
 * 1. Returns HandValues::RoyalFlush if hand is a royal flush
 * 2. Returns HandValues::StraightFlush if hand is a straight flush
 * 3. Returns HandValues::Flush if hand is a flush
 */
-
 fn is_straight_flush(hand: &Vec<Card>) -> HandValues {
-    let suits = [Suit::Hearts, Suit::Diamonds, Suit::Clubs, Suit::Spades];
+    let suits = deck::SUITS;
     let values = [
         Value::Ace,
         Value::Two,
@@ -124,6 +122,9 @@ fn is_straight_flush(hand: &Vec<Card>) -> HandValues {
     for suit in suits {
         straight_in_row = 0;
         for value in values {
+            if value == Value::Jack && straight_in_row == 0 {
+                break;
+            }
             if !hand.contains(&Card { suit, value }) {
                 straight_in_row = 0;
                 continue;

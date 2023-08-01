@@ -68,10 +68,6 @@ impl Hand {
         self.cards.push(card);
     }
 
-    pub fn empty_hand(&mut self) {
-        self.cards = Vec::new();
-    }
-
     pub fn _highest_card(&self) -> Card {
         let mut highest = self.cards[0];
         for i in self.cards.iter() {
@@ -82,7 +78,7 @@ impl Hand {
         return highest;
     }
 
-    pub fn hand_value(&self) -> HandValues {
+    pub fn _hand_value(&self) -> HandValues {
         return hand_value_calculator::hand_value(&self.cards);
     }
 }
@@ -103,7 +99,7 @@ mod tests {
         }
 
         let hand = Hand::new(cards);
-        hand.hand_value();
+        hand._hand_value();
         assert_eq!(hand.value, HandValues::StraightFlush);
     }
 }

@@ -4,8 +4,8 @@ mod player;
 mod poker;
 
 use crate::hand_value_calculator::HandValues;
-use crate::player::Hand;
-use crate::{deck::Card, poker::Poker};
+
+use crate::poker::Poker;
 
 fn main() {
     // let mut poker = Poker::new_texas_hold_em(4);
@@ -20,7 +20,6 @@ fn main() {
     //     }
     //     if i == 1000000000000000 {
     //         println!("{}", i);
-    //         println!("pasalusta");
 
     //         break;
     //     }
@@ -38,17 +37,29 @@ fn main() {
     // println!("{:#?}", poker.deck.cards[0]);
     // poker.shuffle_deck();
 
-    let mut poker = Poker::new_texas_hold_em(2);
+    let mut poker = Poker::new_texas_hold_em(1);
 
     poker.shuffle_deck();
     let mut i: u128 = 0;
+    let mut royal_flushes: u128 = 0;
+    let mut straight_flushes: u128 = 0;
 
     while i < u128::MAX {
         poker.round();
         i += 1;
 
-        if i % 100 == 0 {
+        if i % 100000 == 0 {
             println!("{}", i);
+            println!("royal flushes: {}", royal_flushes);
+            println!("straight flushes: {}", straight_flushes);
+        }
+        for player in &poker.players {
+            if player.hand.value == HandValues::RoyalFlush {
+                royal_flushes += 1;
+            }
+            if player.hand.value == HandValues::StraightFlush {
+                straight_flushes += 1;
+            }
         }
     }
     // let mut i: u128 = 0;
