@@ -43,7 +43,7 @@ fn main() {
     let mut royal_flushes: u128 = 0;
     let mut straight_flushes: u128 = 0;
 
-    while i < u128::MAX {
+    while i < 10_000_000 {
         poker.play_round();
         i += 1;
 
