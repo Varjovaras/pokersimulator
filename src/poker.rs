@@ -1,6 +1,7 @@
 use crate::{
     deck::{Card, Deck},
-    player::{Hand, Player},
+    hand::Hand,
+    player::Player,
 };
 
 pub struct Poker {
@@ -21,7 +22,6 @@ impl Poker {
         }
 
         let players: Vec<Player> = players_for_new_game(player_amount);
-
         Poker {
             player_amount,
             players,

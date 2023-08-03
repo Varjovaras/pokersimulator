@@ -1,4 +1,5 @@
 mod deck;
+mod hand;
 mod hand_value_calculator;
 mod player;
 mod poker;
