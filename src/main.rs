@@ -11,21 +11,22 @@ use std::time::Instant;
 fn main() {
     let start = Instant::now();
 
-    shuffle();
+    // shuffle();
     royal_flush_calculator();
     let duration = start.elapsed();
     println!("Time elapsed in expensive_function() is: {:?}", duration);
 }
 
+#[allow(dead_code)]
 fn shuffle() {
-    let poker = Poker::new_texas_hold_em(4);
-    let mut poker2 = Poker::new_texas_hold_em(4);
+    let poker = Poker::_new_texas_hold_em(4);
+    let mut poker2 = Poker::_new_texas_hold_em(4);
 
     poker2.shuffle_deck();
     let mut i: u128 = 0;
     while i < u128::MAX {
         poker2.shuffle_deck();
-        if i % 100000 == 0 {
+        if i % 10000 == 0 {
             println!("{}", i);
         }
         if i == 1000000000000000 {
@@ -41,13 +42,13 @@ fn shuffle() {
 }
 
 fn royal_flush_calculator() {
-    let mut poker = Poker::new(1, 2, 5);
+    let mut poker = Poker::new(8, 2, 5);
 
     let mut i: u128 = 0;
     let mut royal_flushes: u128 = 0;
     let mut straight_flushes: u128 = 0;
 
-    while i < 1000000 {
+    while i < u128::MAX {
         poker.play_round();
         i += 1;
 

@@ -50,7 +50,7 @@ mod tests {
 
     #[test]
     fn straight_flush_works() {
-        let poker = Poker::new_texas_hold_em(4);
+        let poker = Poker::_new_texas_hold_em(4);
 
         let mut cards: Vec<Card> = Vec::new();
         for i in 0..poker.total_cards as usize {

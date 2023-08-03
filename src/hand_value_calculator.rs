@@ -1,7 +1,9 @@
-use crate::deck::{self, Card, Suit, Value};
+use crate::{
+    deck::{self, Card, Suit, Value},
+    hand::Hand,
+};
 
-#[derive(Debug, Clone, Copy, PartialEq)]
-#[allow(dead_code)]
+#[derive(Debug, Clone, Copy, PartialEq, PartialOrd)]
 pub enum HandValues {
     HighCard = 0,
     OnePair,
@@ -70,7 +72,7 @@ fn is_straight(values: [u8; 14]) -> bool {
     false
 }
 
-fn is_flush(cards: &Vec<Card>) -> bool {
+fn is_flush(cards: &[Card]) -> bool {
     let mut hearts: u8 = 0;
     let mut diamonds: u8 = 0;
     let mut clubs: u8 = 0;
@@ -94,7 +96,7 @@ fn is_flush(cards: &Vec<Card>) -> bool {
 * 2. Returns HandValues::StraightFlush if hand is a straight flush
 * 3. Returns HandValues::Flush if hand is a flush
 */
-fn is_straight_flush(hand: &Vec<Card>) -> HandValues {
+fn is_straight_flush(hand: &[Card]) -> HandValues {
     let suits = deck::SUITS;
     let values = [
         Value::Ace,
@@ -158,7 +160,7 @@ fn how_many_pairs_in_hand(values: [u8; 14]) -> u8 {
     pairs
 }
 
-fn card_helper(cards: &Vec<Card>) -> [u8; 14] {
+fn card_helper(cards: &[Card]) -> [u8; 14] {
     let mut values: [u8; 14] = [0; 14];
     for card in cards.iter() {
         match card.value {
@@ -205,4 +207,17 @@ fn card_helper(cards: &Vec<Card>) -> [u8; 14] {
         }
     }
     values
+}
+
+#[allow(dead_code)]
+pub fn which_hand_is_bigger(hand: &Hand, hand2: &Hand) -> HandValues {
+    let hand_value = hand.value;
+    let hand2_value = hand2.value;
+    if hand_value > hand2_value {
+        return hand_value;
+    }
+    if hand_value < hand2_value {
+        return hand2_value;
+    }
+    HandValues::HighCard
 }

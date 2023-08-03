@@ -33,7 +33,7 @@ impl Poker {
         }
     }
 
-    pub fn new_texas_hold_em(player_amount: i32) -> Poker {
+    pub fn _new_texas_hold_em(player_amount: i32) -> Poker {
         let players: Vec<Player> = players_for_new_game(player_amount);
 
         Poker {
@@ -117,7 +117,7 @@ mod tests {
 
     #[test]
     fn dealing_cards_work() {
-        let mut poker = Poker::new_texas_hold_em(8);
+        let mut poker = Poker::_new_texas_hold_em(8);
         poker._new_player(1000);
         poker.deal_cards_to_players();
         assert_eq!(poker.players[0].hand.cards.len(), 2);
