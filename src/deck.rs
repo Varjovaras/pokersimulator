@@ -135,7 +135,7 @@ impl Deck {
         Deck { cards }
     }
 
-    pub fn shuffle_cards(&mut self) -> () {
+    pub fn shuffle_cards(&mut self) {
         let mut rng = thread_rng();
         self.cards.shuffle(&mut rng);
     }

@@ -19,9 +19,9 @@ pub fn hand_value(hand: &Vec<Card>) -> HandValues {
     if hand.len() < 5 {
         panic!("Hand size too small");
     }
-    let values = card_helper(&hand);
+    let values = card_helper(hand);
 
-    let is_flush: bool = is_flush(&hand);
+    let is_flush: bool = is_flush(hand);
     let is_straight: bool = is_straight(values);
     if is_straight && is_flush {
         return is_straight_flush(hand);
@@ -67,7 +67,7 @@ fn is_straight(values: [u8; 14]) -> bool {
             return true;
         }
     }
-    return false;
+    false
 }
 
 fn is_flush(cards: &Vec<Card>) -> bool {
@@ -86,7 +86,7 @@ fn is_flush(cards: &Vec<Card>) -> bool {
     if hearts >= 5 || diamonds >= 5 || clubs >= 5 || spades >= 5 {
         return true;
     }
-    return false;
+    false
 }
 
 /**
@@ -133,19 +133,19 @@ fn is_straight_flush(hand: &Vec<Card>) -> HandValues {
             }
         }
     }
-    return HandValues::Flush;
+    HandValues::Flush
 }
 
 fn is_four_of_kind(values: [u8; 14]) -> bool {
-    return values.contains(&4);
+    values.contains(&4)
 }
 
 fn hand_is_full_house(values: [u8; 14]) -> bool {
-    return values.contains(&3) && values.contains(&2);
+    values.contains(&3) && values.contains(&2)
 }
 
 fn hand_is_three_of_kind(values: [u8; 14]) -> bool {
-    return values.contains(&3) && !values.contains(&2);
+    values.contains(&3) && !values.contains(&2)
 }
 
 fn how_many_pairs_in_hand(values: [u8; 14]) -> u8 {
@@ -155,7 +155,7 @@ fn how_many_pairs_in_hand(values: [u8; 14]) -> u8 {
             pairs += 1;
         }
     }
-    return pairs;
+    pairs
 }
 
 fn card_helper(cards: &Vec<Card>) -> [u8; 14] {

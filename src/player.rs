@@ -54,14 +54,14 @@ pub struct Hand {
 impl Hand {
     pub fn new(cards: Vec<Card>) -> Hand {
         let value = hand_value_calculator::hand_value(&cards);
-        return Hand { cards, value };
+        Hand { cards, value }
     }
 
     pub fn new_empty_hand() -> Hand {
-        return Hand {
+        Hand {
             cards: Vec::new(),
             value: HandValues::HighCard,
-        };
+        }
     }
 
     pub fn add_card(&mut self, card: Card) {
@@ -75,11 +75,11 @@ impl Hand {
                 highest = *i;
             }
         }
-        return highest;
+        highest
     }
 
     pub fn _hand_value(&self) -> HandValues {
-        return hand_value_calculator::hand_value(&self.cards);
+        hand_value_calculator::hand_value(&self.cards)
     }
 }
 

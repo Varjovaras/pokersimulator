@@ -4,46 +4,49 @@ mod player;
 mod poker;
 
 use crate::hand_value_calculator::HandValues;
-
 use crate::poker::Poker;
+use std::time::Instant;
 
 fn main() {
-    let _poker = Poker::new_texas_hold_em(4);
-    // let poker2 = Poker::new_texas_hold_em(4);
+    let start = Instant::now();
 
-    // poker.shuffle_deck();
-    // let mut i: u128 = 0;
-    // while i < u128::MAX {
-    //     // poker2.shuffle_deck();
-    //     if i % 1000000000 == 0 {
-    //         println!("{}", i);
-    //     }
-    //     if i == 1000000000000000 {
-    //         println!("{}", i);
+    shuffle();
+    royal_flush_calculator();
+    let duration = start.elapsed();
+    println!("Time elapsed in expensive_function() is: {:?}", duration);
+}
 
-    //         break;
-    //     }
-    //     if poker.deck.cards == poker2.deck.cards {
-    //         panic!("decks are equal");
-    //     }
-    //     i += 1;
-    // }
+fn shuffle() {
+    let poker = Poker::new_texas_hold_em(4);
+    let mut poker2 = Poker::new_texas_hold_em(4);
 
-    // let _card = poker.deck._top_card();
-    // let _card = poker.deck._top_card();
+    poker2.shuffle_deck();
+    let mut i: u128 = 0;
+    while i < u128::MAX {
+        poker2.shuffle_deck();
+        if i % 100000 == 0 {
+            println!("{}", i);
+        }
+        if i == 1000000000000000 {
+            println!("{}", i);
 
-    // poker.shuffle_deck();
+            break;
+        }
+        if poker.deck.cards == poker2.deck.cards {
+            panic!("decks are equal pasalusta");
+        }
+        i += 1;
+    }
+}
 
-    // println!("{:#?}", poker.deck.cards[0]);
-    // poker.shuffle_deck();
-
+fn royal_flush_calculator() {
     let mut poker = Poker::new(1, 2, 5);
 
     let mut i: u128 = 0;
     let mut royal_flushes: u128 = 0;
     let mut straight_flushes: u128 = 0;
 
-    while i < 10_000_000 {
+    while i < 1000000 {
         poker.play_round();
         i += 1;
 
@@ -65,41 +68,4 @@ fn main() {
             }
         }
     }
-    // let mut i: u128 = 0;
-    // while i < u128::MAX {
-    //     poker.shuffle_deck();
-    //     let mut cards: Vec<Card> = Vec::new();
-    //     for j in 0..poker.total_cards as usize {
-    //         cards.push(poker.deck.cards[j]);
-    //     }
-
-    //     let hand = Hand::new(cards);
-
-    //     hand.hand_value();
-
-    //     let value = hand.value;
-    //     if value == HandValues::RoyalFlush {
-    //         println!("{:?}", i);
-    //         println!("{:?}", hand.cards);
-    //         println!("{:?}", hand.value);
-    //         // break;
-    //     }
-
-    //     // if i % 10000 == 0 {
-    //     //     println!("{:?}", i);
-    //     // }
-    //     i += 1;
-    // }
-
-    // let mut cards: Vec<Card> = Vec::new();
-    // for i in 0..poker.total_cards as usize {
-    //     cards.push(poker.deck.cards[i]);
-    // }
-
-    // let hand = Hand::new(cards);
-    // println!("{:?}", hand);
-
-    // hand.hand_value();
-    // println!("{:?}", hand.value);
-    // assert_eq!(hand.value, HandValues::Straight);
 }

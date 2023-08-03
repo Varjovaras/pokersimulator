@@ -1,5 +1,3 @@
-use core::panic;
-
 use crate::{
     deck::{Card, Deck},
     player::{Hand, Player},
